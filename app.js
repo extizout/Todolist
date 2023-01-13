@@ -13,6 +13,12 @@ const db = "todolistDB"
 const dbPort = 27017
 mongoose.connect("mongodb://localhost:" + dbPort + "/" + db);
 
+//Schema & Model
+const itemsSchema = {
+  name: String
+};
+const Item = new mongoose.model("Item", itemsSchema)
+
 const items = [];
 const workItem = [];
 
@@ -34,10 +40,10 @@ app.get("/", (req, res) => {
 
 app.post("/", (req, res) => {
   let item = req.body.toDo;
-  if(req.body.submit === 'Work'){
+  if (req.body.submit === 'Work') {
     workItem.push(item);
     res.redirect('/work');
-  }else{
+  } else {
     items.push(item);
     res.redirect('/');
   }
