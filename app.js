@@ -19,6 +19,24 @@ const itemsSchema = {
 };
 const Item = new mongoose.model("Item", itemsSchema)
 
+const todo1 = new Item({
+  name: "Buy food"
+});
+const todo2 = new Item({
+  name: "Cigg"
+});
+const todo3 = new Item({
+  name: "Learning"
+});
+
+Item.insertMany([todo1, todo2, todo3], (err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("Successfully insert");
+  };
+})
+
 const items = [];
 const workItem = [];
 
