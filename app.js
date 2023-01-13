@@ -29,15 +29,6 @@ const todo3 = new Item({
   name: "Learning"
 });
 
-Item.insertMany([todo1, todo2, todo3], (err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("Successfully insert");
-  };
-})
-
-const items = [];
 const workItem = [];
 
 //Set view engine to use EJS template
@@ -50,10 +41,12 @@ app.use(express.static(__dirname + '/public'));
 
 app.get("/", (req, res) => {
   let day = date.getDate();
-  res.render("list", {
-    listTitle: day,
-    newListItems: items
-  });
+  Item.find({}, (err, items) => {
+    res.render("list", {
+      listTitle: day,
+      newListItems: items
+    });
+  })
 });
 
 app.post("/", (req, res) => {
