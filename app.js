@@ -1,10 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require("mongoose");
 //require locally module
 const date = require(__dirname + '/date.js');
 
+//conf for Express
 const port = 3000;
 const app = express();
+
+//conf & connect to mongodb
+const db = "todolistDB"
+const dbPort = 27017
+mongoose.connect("mongodb://localhost:" + dbPort + "/" + db);
+
 const items = [];
 const workItem = [];
 
