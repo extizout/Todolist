@@ -71,8 +71,17 @@ app.get('/work', (req, res) => {
 app.post("/work", (req, res) => {
   let item = req.body.toDo;
   workItem.push(item);
-
   res.redirect('/work');
+});
+
+app.post('/delete', (req,res)=>{
+  const checkedId = req.body.checkedbox;
+  Item.findByIdAndDelete(checkedId,(err)=>{
+    if(err){
+      console.log(err);
+    }
+    res.redirect("/")
+  })
 });
 
 app.listen(port, () => {
