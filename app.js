@@ -57,7 +57,6 @@ app.get("/", (req, res) => {
 
 app.post("/", (req, res) => {
   let toDo = req.body.toDo;
-
   let newItem = new Item({
     name: toDo
   });
@@ -79,20 +78,24 @@ app.get('/:customListName', (req, res) => {
           name: listName,
           items: [todo1, todo2, todo3]
         });
+
         listItem.save();
+
         console.log("Create " + listName + " Collection.");
+
+        res.redirect("/" + listName);
       } else {
+        res.render("list", {
+          listTitle: listName,
+          newListItems: result[0].items
+        });
         console.log("Already Create Collection.");
       };
     } else {
       console.log(err);
     }
   });
-  // res.render("list", {
-  //   listTitle: req.params.customListName,
-  //   newListItems: workItem
-  // });
-})
+});
 
 app.post("/work", (req, res) => {
   let item = req.body.toDo;
