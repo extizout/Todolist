@@ -50,14 +50,14 @@ app.get("/", (req, res) => {
 });
 
 app.post("/", (req, res) => {
-  let item = req.body.toDo;
-  if (req.body.submit === 'Work') {
-    workItem.push(item);
-    res.redirect('/work');
-  } else {
-    items.push(item);
-    res.redirect('/');
-  }
+  let toDo = req.body.toDo;
+
+  let newItem = new Item({
+    name: toDo
+  });
+
+  newItem.save();
+  res.redirect("/");
 });
 
 
