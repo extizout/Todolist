@@ -68,18 +68,20 @@ app.post("/", (req, res) => {
 
 app.get('/:customListName', (req, res) => {
   const listName = req.params.customListName;
-List.find({name: listName},(err, result)=>{
-  if(result <= 0){
-    const listItem = new List({
-      name: listName,
-      items: [todo1, todo2, todo3]
-    });
-  listItem.save();
-  console.log("Create " +listName + " Collection.");
-}else{
-  console.log("Already Create Collection.");
-};
-});
+  List.find({
+    name: listName
+  }, (err, result) => {
+    if (result <= 0) {
+      const listItem = new List({
+        name: listName,
+        items: [todo1, todo2, todo3]
+      });
+      listItem.save();
+      console.log("Create " + listName + " Collection.");
+    } else {
+      console.log("Already Create Collection.");
+    };
+  });
   // res.render("list", {
   //   listTitle: req.params.customListName,
   //   newListItems: workItem
