@@ -24,6 +24,7 @@ const listSchema = {
 const Item = new mongoose.model("Item", itemsSchema);
 const List = new mongoose.model("List", listSchema);
 
+//Conf for Default item
 const todo1 = new Item({
   name: "Buy food"
 });
@@ -36,7 +37,6 @@ const todo3 = new Item({
 
 //Set view engine to use EJS templateconst dbPort = 27017
 mongoose.connect("mongodb://localhost:" + dbPort + "/" + db);
-
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({
   extended: true
@@ -44,6 +44,7 @@ app.use(bodyParser.urlencoded({
 //Set staticFolder for relative location
 app.use(express.static(__dirname + '/public'));
 
+//Route root
 app.get("/", (req, res) => {
   let day = date.getDate();
   Item.find({}, (err, items) => {
