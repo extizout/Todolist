@@ -17,7 +17,12 @@ mongoose.connect("mongodb://localhost:" + dbPort + "/" + db);
 const itemsSchema = {
   name: String
 };
-const Item = new mongoose.model("Item", itemsSchema)
+const listSchema = {
+  name: String,
+  items: [itemsSchema]
+};
+const Item = new mongoose.model("Item", itemsSchema);
+const List = new mongoose.model("List", listSchema);
 
 const todo1 = new Item({
   name: "Buy food"
@@ -29,9 +34,9 @@ const todo3 = new Item({
   name: "Learning"
 });
 
-const workItem = [];
+//Set view engine to use EJS templateconst dbPort = 27017
+mongoose.connect("mongodb://localhost:" + dbPort + "/" + db);
 
-//Set view engine to use EJS template
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({
   extended: true
@@ -61,11 +66,24 @@ app.post("/", (req, res) => {
 });
 
 
-app.get('/work', (req, res) => {
-  res.render("list", {
-    listTitle: 'Work',
-    newListItems: workItem
-  });
+app.get('/:customListName', (req, res) => {
+  const listName = req.params.customListName;
+List.find({name: listName},(err, result)=>{
+  if(result <= 0){
+    const listItem = new List({
+      name: listName,
+      items: [todo1, todo2, todo3]
+    });
+  listItem.save();
+  console.log("Create " +listName + " Collection.");
+}else{
+  console.log("Already Create Collection.");
+};
+});
+  // res.render("list", {
+  //   listTitle: req.params.customListName,
+  //   newListItems: workItem
+  // });
 })
 
 app.post("/work", (req, res) => {
@@ -74,10 +92,10 @@ app.post("/work", (req, res) => {
   res.redirect('/work');
 });
 
-app.post('/delete', (req,res)=>{
+app.post('/delete', (req, res) => {
   const checkedId = req.body.checkedbox;
-  Item.findByIdAndDelete(checkedId,(err)=>{
-    if(err){
+  Item.findByIdAndDelete(checkedId, (err) => {
+    if (err) {
       console.log(err);
     }
     res.redirect("/")
