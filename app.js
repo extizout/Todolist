@@ -49,7 +49,7 @@ app.get("/", (req, res) => {
   let day = date.getDate();
   Item.find({}, (err, items) => {
     res.render("list", {
-      listTitle: day,
+      listTitle: "Today",
       newListItems: items
     });
   })
