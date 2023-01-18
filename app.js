@@ -57,13 +57,25 @@ app.get("/", (req, res) => {
 
 app.post("/", (req, res) => {
   let toDo = req.body.toDo;
-  const submitType = req.body.submit
+  const submitType = req.body.submit;
+
   let newItem = new Item({
     name: toDo
   });
 
-  newItem.save();
-  res.redirect("/");
+  if (submitType === "Today") {
+    newItem.save();
+    res.redirect("/");
+  } else {
+    List.find({
+      name: submitType
+    }, (err, result) => {
+      result[0].items.push(newItem);
+      result[0].save();
+
+      res.redirect("/" + submitType);
+    });
+  };
 });
 
 
