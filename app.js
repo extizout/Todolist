@@ -57,6 +57,7 @@ app.get("/", (req, res) => {
 
 app.post("/", (req, res) => {
   let toDo = req.body.toDo;
+  const submitType = req.body.submit
   let newItem = new Item({
     name: toDo
   });
@@ -68,7 +69,6 @@ app.post("/", (req, res) => {
 
 app.get('/:customListName', (req, res) => {
   const listName = req.params.customListName;
-
   List.find({
     name: listName
   }, (err, result) => {
