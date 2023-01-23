@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
+const _ = require('lodash');
 //require locally module
 const date = require(__dirname + '/date.js');
 
@@ -80,7 +81,9 @@ app.post("/", (req, res) => {
 
 
 app.get('/:customListName', (req, res) => {
-  const listName = req.params.customListName;
+  const capitalize = _.capitalize(req.params.customListName);
+  const listName = capitalize;
+  
   List.find({
     name: listName
   }, (err, result) => {
