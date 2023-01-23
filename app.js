@@ -117,12 +117,22 @@ app.post("/work", (req, res) => {
 
 app.post('/delete', (req, res) => {
   const checkedId = req.body.checkedbox;
-  Item.findByIdAndDelete(checkedId, (err) => {
-    if (err) {
-      console.log(err);
-    }
-    res.redirect("/")
-  })
+  const listName = req.body.listName;
+
+  if (listName === "Today") {
+    Item.findByIdAndDelete(checkedId, (err) => {
+      if (err) {
+        console.log(err);
+      }
+      res.redirect("/");
+    })
+  } else {
+    List.findOneAndUpdate({name: listName}, {$pull: {items: {_id: checkedId}}}, (err,result)=>{
+      if(!err){
+        res.redirect("/" + listName);
+      }
+    });
+  }
 });
 
 app.listen(port, () => {
